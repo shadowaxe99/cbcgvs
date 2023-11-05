@@ -1,0 +1,37 @@
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elysium-innovations-demo
+  labels:
+    app: elysium-innovations-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: elysium-innovations-demo
+  template:
+    metadata:
+      labels:
+        app: elysium-innovations-demo
+    spec:
+      containers:
+      - name: elysium-innovations-demo
+        image: elysium-innovations/demo:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+      imagePullSecrets:
+      - name: regcred
+```
